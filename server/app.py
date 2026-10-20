@@ -201,7 +201,8 @@ def check_sandbox_available(
     https://code.claude.com/docs/en/sandboxing#platform-and-tool-compatibility），server
     仍可启动但 sandbox 关闭，Bash 工具回退到
     ``AgentAccessPolicy.WINDOWS_BASH_PREFIX_WHITELIST`` 代码白名单。
-    macOS / Linux 工具缺失仍硬失败（受支持平台禁止降级）。
+    macOS / Linux 工具缺失默认硬失败；仅在显式设置
+    ARCREEL_ALLOW_UNSANDBOXED_AGENT=true 时允许无 bwrap 的受限回退。
     """
     system = (platform_system or platform.system)()
     which = executable_which or shutil.which
@@ -254,10 +255,20 @@ def check_sandbox_available(
             ) from exc
         if probe.returncode != 0:
             stderr = probe.stderr.decode("utf-8", errors="replace").strip() or "(no stderr)"
+            if os.getenv("ARCREEL_ALLOW_UNSANDBOXED_AGENT", "").strip().lower() in {"1", "true", "yes"}:
+                logger.warning(
+                    "SANDBOX_BWRAP_BROKEN on Linux (%s); explicit "
+                    "ARCREEL_ALLOW_UNSANDBOXED_AGENT opt-in enables the restricted "
+                    "Bash allowlist fallback. Do not use for untrusted users/projects.",
+                    stderr,
+                )
+                return False
             raise RuntimeError(
                 "SANDBOX_BWRAP_BROKEN on Linux\n"
                 f"  bwrap installed but cannot run: {stderr}\n"
-                f"{_diagnose_bwrap_failure()}"
+                f"{_diagnose_bwrap_failure()}\n"
+                "For restricted-host platforms only, set ARCREEL_ALLOW_UNSANDBOXED_AGENT=true "
+                "to opt into the limited Bash allowlist fallback."
             )
         return True
     logger.warning(
