@@ -202,6 +202,9 @@ async def test_build_system_prompt_renders_language_rule_for_locale(tmp_path: Pa
         "## 当前项目上下文",
         "## 用户记忆",
     ]
+    if locale == "zh":
+        assert "Chinese" not in append
+        assert "natural Indian Hinglish in Roman (Latin) script" in append
     # 人设随创作类型 CLAUDE.md 由 SDK 加载，不再由服务端追加
     assert "ArcReel Agent" not in append
 
