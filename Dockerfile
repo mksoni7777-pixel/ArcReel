@@ -77,7 +77,7 @@ EXPOSE 1241
 
 # 健康检查
 HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
-    CMD curl -f http://localhost:1241/health || exit 1
+    CMD curl -f "http://localhost:${PORT:-1241}/health" || exit 1
 
 # 启动命令
-CMD ["uv", "run", "uvicorn", "server.app:app", "--host", "0.0.0.0", "--port", "1241"]
+CMD ["sh", "-c", "exec uv run uvicorn server.app:app --host 0.0.0.0 --port ${PORT:-1241}"]
