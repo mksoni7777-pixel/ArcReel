@@ -6,9 +6,10 @@ from lib.prompts.agent_language import agent_language_name
 
 
 def test_agent_language_name_preserves_supported_locales() -> None:
-    assert agent_language_name("zh") == "Chinese"
+    assert agent_language_name("zh") == "natural Indian Hinglish in Roman (Latin) script"
     assert agent_language_name("en") == "English"
     assert agent_language_name("vi") == "Vietnamese"
+    assert agent_language_name("hi") == "natural Indian Hinglish in Roman (Latin) script"
 
 
 def test_agent_language_name_supports_roman_script_hinglish_aliases() -> None:
