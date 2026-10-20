@@ -29,7 +29,7 @@ from lib.agent.agent_session_store.store import DbSessionStore
 from lib.agent.credential_tiers import AgentPricing
 from lib.db.base import DEFAULT_USER_ID
 from lib.db.engine import async_session_factory as default_async_session_factory
-from lib.i18n import DEFAULT_LOCALE, LOCALE_LANGUAGE_MAP
+from lib.i18n import DEFAULT_LOCALE
 from lib.infra.async_thread import run_sync_transaction
 from lib.infra.data_root_layout import DataRootLayout
 from lib.prompts.prompt_templates.builtin import builtin_templates
