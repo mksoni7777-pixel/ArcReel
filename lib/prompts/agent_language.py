@@ -9,11 +9,10 @@ def agent_language_name(locale: str) -> str:
     user-specific language preferences without changing UI translations.
     """
     normalized = (locale or "").strip().lower().replace("_", "-")
-    if normalized in {"hinglish", "hi-latn", "hi-latin", "roman-hindi", "romanized-hindi"}:
+    if normalized in {"zh", "hinglish", "hi", "hi-latn", "hi-latin", "roman-hindi", "romanized-hindi"}:
+        # A Chinese UI locale must not silently force Chinese creative output.
         return "natural Indian Hinglish in Roman (Latin) script"
     return {
-        "zh": "Chinese",
         "en": "English",
         "vi": "Vietnamese",
-        "hi": "Hindi (Devanagari script)",
     }.get(normalized, "natural Indian Hinglish in Roman (Latin) script")
