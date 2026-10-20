@@ -29,9 +29,10 @@ from lib.agent.agent_session_store.store import DbSessionStore
 from lib.agent.credential_tiers import AgentPricing
 from lib.db.base import DEFAULT_USER_ID
 from lib.db.engine import async_session_factory as default_async_session_factory
-from lib.i18n import DEFAULT_LOCALE, LOCALE_LANGUAGE_MAP
+from lib.i18n import DEFAULT_LOCALE
 from lib.infra.async_thread import run_sync_transaction
 from lib.infra.data_root_layout import DataRootLayout
+from lib.prompts.agent_language import agent_language_name
 from lib.prompts.prompt_templates.builtin import builtin_templates
 from server.agent_runtime.agent_access_policy import AgentAccessPolicy
 from server.agent_runtime.arcreel_mcp import build_arcreel_mcp_server
@@ -157,7 +158,7 @@ class OptionsAssembler:
         into the cwd, carrying the Agent persona) is auto-loaded by the SDK via
         setting_sources=["project"].
         """
-        lang = LOCALE_LANGUAGE_MAP.get(locale, "中文")
+        lang = agent_language_name(locale or DEFAULT_LOCALE)
         parts = [builtin_templates.render("text/agent_language_rule", lang=lang)]
 
         project_context = await asyncio.to_thread(self._build_project_context, project_name)
