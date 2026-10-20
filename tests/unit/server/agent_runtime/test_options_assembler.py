@@ -183,7 +183,7 @@ async def test_build_adds_keep_alive_hook_with_can_use_tool(tmp_path: Path) -> N
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     ("locale", "language"),
-    [("zh", "中文"), ("en", "English"), ("vi", "Tiếng Việt")],
+    [("zh", "Chinese"), ("en", "English"), ("vi", "Vietnamese"), ("hinglish", "natural Indian Hinglish in Roman (Latin) script")],
 )
 async def test_build_system_prompt_renders_language_rule_for_locale(tmp_path: Path, locale: str, language: str) -> None:
     """追加的系统提示按 locale 渲染语言规范，只含语言规范、项目上下文与用户记忆三段。"""
