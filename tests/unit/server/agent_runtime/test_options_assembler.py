@@ -195,10 +195,10 @@ async def test_build_system_prompt_renders_language_rule_for_locale(tmp_path: Pa
     options = await assembler.build("demo", locale=locale)
     append = options.system_prompt["append"]
 
-    assert f"- **回答用户必须使用{language}**：" in append
-    assert f"- **Prompt 使用{language}**：" in append
+    assert f"**Reply language:** Address the user in {language}." in append
+    assert f"**Prompt language:** Write image-generation and video-generation prompts in {language}" in append
     assert [line for line in append.splitlines() if line.startswith("## ")] == [
-        "## 语言规范",
+        "## Language policy",
         "## 当前项目上下文",
         "## 用户记忆",
     ]
